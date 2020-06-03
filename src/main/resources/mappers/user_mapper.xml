@@ -1,0 +1,12 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.logistic_company.dao.IUserDAO">
+    <resultMap id="user" type="com.solvd.logistic_company.entity.User">
+        <id property='id' column='id'/>
+        <result property="userName" column="username"/>
+    </resultMap>
+    <select id="getUserByUserName" parameterType="java.lang.String" resultMap="user">
+        select * from user_instance
+        where username = #{userName}
+    </select>
+</mapper>
