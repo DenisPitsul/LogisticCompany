@@ -1,0 +1,30 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.logistic_company.dao.IRoadDAO">
+    <resultMap id="road" type="com.solvd.logistic_company.entity.Road">
+        <id property='id' column='id'/>
+        <result property="distance" column="distance"/>
+        <association property="cityFrom"
+                     column="city_from_id"
+                     javaType="com.solvd.logistic_company.entity.City"
+                     select="com.solvd.logistic_company.dao.ICityDAO.getCityById"
+                     fetchType="eager"/>
+        <association property="cityTo"
+                     column="city_to_id"
+                     javaType="com.solvd.logistic_company.entity.City"
+                     select="com.solvd.logistic_company.dao.ICityDAO.getCityById"
+                     fetchType="eager"/>
+    </resultMap>
+    <select id="getAllRoads" resultMap="road">
+        select * from road
+        inner join city as city_from on road.city_from_id = city_from.id
+        inner join city as city_to on road.city_to_id = city_to.id
+    </select>
+    <select id="getRoadsByCityNames" parameterType="com.solvd.logistic_company.helper.CityNames" resultMap="road">
+        select * from road
+        inner join city as city_from on road.city_from_id = city_from.id
+        inner join city as city_to on road.city_to_id = city_to.id
+        where city_from.name = #{cityFromName}
+        and city_to.name = #{cityToName}
+    </select>
+</mapper>

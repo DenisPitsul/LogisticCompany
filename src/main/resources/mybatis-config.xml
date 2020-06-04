@@ -21,5 +21,8 @@
     </environments>
     <mappers>
         <mapper resource="mappers/user_mapper.xml"/>
+        <mapper resource="mappers/city_mapper.xml"/>
+        <mapper resource="mappers/road_mapper.xml"/>
+        <mapper resource="mappers/delivery_mapper.xml"/>
     </mappers>
 </configuration>

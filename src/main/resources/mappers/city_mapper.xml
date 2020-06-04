@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.logistic_company.dao.ICityDAO">
+    <resultMap id="city" type="com.solvd.logistic_company.entity.City">
+        <id property='id' column='id'/>
+        <result property="name" column="name"/>
+        <result property="storageCapacity" column="storage_capacity"/>
+    </resultMap>
+    <select id="getCityById" parameterType="java.lang.Long" resultMap="city">
+        select * from city
+        where id = #{id}
+    </select>
+    <select id="getCityByName" parameterType="java.lang.String" resultMap="city">
+        select * from city
+        where name = #{name}
+    </select>
+    <update id="updateCity" parameterType="com.solvd.logistic_company.entity.City">
+        update city
+        set name = #{name}, storage_capacity = #{storageCapacity}
+        where id = #{id}
+    </update>
+</mapper>
