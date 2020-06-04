@@ -23,7 +23,7 @@ public class DeliveryDAO implements IDeliveryDAO {
         LOGGER.info("Got all deliveries");
         session.close();
 
-        return null;
+        return deliveryList;
     }
 
     @Override

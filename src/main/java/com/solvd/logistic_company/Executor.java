@@ -5,6 +5,7 @@ import com.solvd.logistic_company.entity.Delivery;
 import com.solvd.logistic_company.entity.Road;
 import com.solvd.logistic_company.entity.User;
 import com.solvd.logistic_company.helper.CityNames;
+import com.solvd.logistic_company.menu.UserMenu;
 import com.solvd.logistic_company.service.CityService;
 import com.solvd.logistic_company.service.DeliveryService;
 import com.solvd.logistic_company.service.RoadService;
@@ -18,8 +19,10 @@ public class Executor {
 
     public static void main(String[] args) {
 
-        // testGetUserByUserName();
+        UserMenu userMenu = new UserMenu();
+        userMenu.openMainMenu();
 
+        // testGetUserByUserName();
 
         // testGetAllRoads();
         // testGetRoadsByCityNames();
