@@ -21,20 +21,20 @@ public class UserMenu {
     }
 
     public void openMainMenu(){
-        while (true){
             try{
-                in = new Scanner(System.in);
-                System.out.println("Enter user which have to be login: ");
-                String userName = in.nextLine();
-                User user = getUserFromDB(userName);
-                if (user != null){
-                    openDeliveryParsingMenu();
+                while (true) {
+                    in = new Scanner(System.in);
+                    System.out.println("Enter user which have to be login: ");
+                    String userName = in.nextLine();
+                    User user = getUserFromDB(userName);
+                    if (user != null) {
+                        openDeliveryParsingMenu();
+                    }
                 }
             } catch(InputMismatchException e){
                 LOGGER.error(e.getStackTrace());
             }
         }
-    }
 
     private User getUserFromDB(String userName){
         User user = userService.getUserByUserName(userName);
