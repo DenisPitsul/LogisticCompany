@@ -16,7 +16,7 @@ public class DeliveryParsingMenu {
 
     private Scanner in;
 
-    public void inputParsingOperation(){
+    public void inputParsingOperation() {
         //to do - write parsing delivery operation
         in = new Scanner(System.in);
         System.out.println("Enter path to the JSON file:");
@@ -28,18 +28,28 @@ public class DeliveryParsingMenu {
         }
         // check if the destination city exists
         City destinationCity = cityService.getCityByName(request.getCityTo());
-        if (destinationCity == null){
+        if (destinationCity == null) {
             System.out.println("Unknown destination city " + request.getCityTo() + "!");
             LOGGER.warn("Unknown destination city " + request.getCityTo() + "!");
             return;
         }
+
         // check if the source city exists
         City departureCity = cityService.getCityByName(request.getCityFrom());
         if (departureCity == null) {
             System.out.println("Unknown departure city " + request.getCityFrom() + "!");
-            LOGGER.warn("Unknown departure city " + request.getCityFrom()+ "!");
+            LOGGER.warn("Unknown departure city " + request.getCityFrom() + "!");
         }
+        //check there's enough storageCapacity in a destination City
+        if (destinationCity.getStorageCapacity() >= request.getCargo()) {
+            System.out.println("The cargo can be stored in " + request.getCityTo());
+            LOGGER.info("The cargo can be stored in " + request.getCityTo());
+        } else {
+            System.out.println("There is not enough storage capacity in " + request.getCityTo());
+            LOGGER.warn("here is not enough storage capacity in " + request.getCityTo());
         }
+    }
+
 
         // TODO: calculate the nearest city with free capacity
 
