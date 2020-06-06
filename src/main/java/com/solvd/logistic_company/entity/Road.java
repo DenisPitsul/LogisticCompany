@@ -1,6 +1,8 @@
 package com.solvd.logistic_company.entity;
 
-public class Road {
+import com.solvd.logistic_company.helper.Copyable;
+
+public class Road implements Copyable {
     private Long id;
     private City cityFrom;
     private City cityTo;
@@ -54,5 +56,10 @@ public class Road {
                 ", cityTo=" + cityTo +
                 ", distance=" + distance +
                 '}';
+    }
+
+    @Override
+    public Road copy() {
+        return new Road(cityFrom.copy(), cityTo.copy(), distance);
     }
 }

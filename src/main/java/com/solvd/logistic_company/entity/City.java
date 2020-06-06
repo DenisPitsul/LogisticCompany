@@ -1,6 +1,8 @@
 package com.solvd.logistic_company.entity;
 
-public class City {
+import com.solvd.logistic_company.helper.Copyable;
+
+public class City implements Copyable {
     private Long id;
     private String name;
     private Integer storageCapacity;
@@ -43,5 +45,10 @@ public class City {
                 ", name='" + name + '\'' +
                 ", storageCapacity=" + storageCapacity +
                 '}';
+    }
+
+    @Override
+    public City copy() {
+        return new City(name, storageCapacity);
     }
 }

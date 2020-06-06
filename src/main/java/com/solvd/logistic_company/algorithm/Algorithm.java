@@ -6,153 +6,107 @@ import com.solvd.logistic_company.service.CityService;
 import com.solvd.logistic_company.service.RoadService;
 import org.apache.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class Algorithm {
 
-    private final  static Logger LOGGER = Logger.getLogger(Algorithm.class);
-
     public static void main(String[] args) {
-        algorithm();
+        findShortestRoads();
     }
 
-    public static void algorithm(){
-
-        int n = 5;
-
+    public static void findShortestRoads() {
         CityService cityService = new CityService();
-        LOGGER.info(cityService.getAllCities());
-        List<City> listCity = cityService.getAllCities();
+        List<City> cityList = cityService.getAllCities();
 
         RoadService roadService = new RoadService();
-        LOGGER.info(roadService.getAllRoads());
-        List<Road> listRoad = roadService.getAllRoads();
+        List<Road> roadList = roadService.getAllRoads();
 
-        Road [][] roadMatrix = new Road[listCity.size()][listCity.size()];
+        Road[][] roadMatrix = getRoadMatrix(cityList, roadList);
+        initNullRoadElements(roadMatrix, cityList);
+        System.out.println("Roads from database: ");
+        outputRoadMatrix(roadMatrix);
 
-        for (int i = 0; i < listCity.size(); i++){
-            for (int j = 0; j < listCity.size(); j++){
-                for (int k = 0; k < listRoad.size(); k++){
-                    if (listCity.get(i).getId().equals(listRoad.get(k).getCityFrom().getId())
-                            && listCity.get(j).getId().equals(listRoad.get(k).getCityTo().getId())){
-                        roadMatrix[i][j] = listRoad.get(k);
+        boolean isFinished = false;
+        while (!isFinished) {
+            Road[][] compareRoadMatrix = getCopyRoadMatrix(roadMatrix);
 
-                    }
-                }
-            }
-        }
-
-        for (int i = 0; i < roadMatrix.length; i++){
-            for (int j = 0; j < roadMatrix[i].length; j++){
-                if (i==j){
-                    roadMatrix[i][j] = new Road(listCity.get(i), listCity.get(j), 0);
-                } else {
-                    if (roadMatrix[i][j] == null) {
-                        roadMatrix[i][j] = new Road(listCity.get(i), listCity.get(j), -1);
-                    }
-                }
-                System.out.print(roadMatrix[i][j].getDistance() + "\t");
-            }
-            System.out.println();
-        }
-
-        for (int i = 0; i < roadMatrix.length; i++){
-            for (int j = 0; j < roadMatrix[i].length; j++){
-                if (roadMatrix[i][j].getDistance() > 0){
-                    for (int k = 0; k < roadMatrix[j].length; k++){
-                        //if (roadMatrix[i][k].getDistance() > 0 && roadMatrix[j][k].getDistance() > 0){
-                            if (roadMatrix[i][k].getDistance() > roadMatrix[i][j].getDistance() + roadMatrix[j][k].getDistance()) {
+            for (int i = 0; i < roadMatrix.length; i++) {
+                for (int j = 0; j < roadMatrix[i].length; j++) {
+                    if (roadMatrix[i][j].getDistance() > 0) {
+                        for (int k = 0; k < roadMatrix[j].length; k++) {
+                            if (roadMatrix[i][k].getDistance() > roadMatrix[i][j].getDistance() + roadMatrix[j][k].getDistance())
                                 roadMatrix[i][k].setDistance(roadMatrix[i][j].getDistance() + roadMatrix[j][k].getDistance());
-                            }
-
-                        //}
-                    }
-                }
-            }
-        }
-        System.out.println();
-
-        for (int i = 0; i < roadMatrix.length; i++){
-            for (int j = 0; j < roadMatrix[i].length; j++){
-                System.out.print(roadMatrix[i][j].getDistance() + "\t");
-            }
-            System.out.println();
-        }
-
-/*
-        int [][] matrixWeight = {
-                {25,10,25,25,25},
-                {25,25,12,25,8},
-                {25,25,25,8,25},
-                {25,6,8,25,3},
-                {25,25,25,3,25}};
-        int [][] matrixHistory = {
-                {0,2,0,0,0},
-                {0,0,3,0,5},
-                {0,0,0,4,0},
-                {0,2,3,0,5},
-                {0,0,0,4,0}
-        };*/
-
-
-
-/*        System.out.println("Matrix weight: ");
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < n; j++){
-                System.out.printf("%3d", matrixWeight[i][j]);
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println("Matrix history: ");
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < n; j++){
-                System.out.printf("%3d", matrixHistory[i][j]);
-            }
-            System.out.println();
-        }*/
-
-/*        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("City from: ");
-        int cityFrom = scanner.nextInt();
-        System.out.println("City to: ");
-        int cityTo = scanner.nextInt();
-
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < n; j++){
-                if (matrixWeight[i][j] > -1){
-                    for (int k = 0; k < n; k++){
-                        if (matrixWeight[i][k] > matrixWeight[i][j] + matrixWeight[j][k]) {
-                            matrixWeight[i][k] = matrixWeight[i][j] + matrixWeight[j][k];
-                            matrixHistory[i][k] = matrixHistory[i][j];
                         }
                     }
                 }
             }
+
+            boolean isMatrixEquals = true;
+            outerloop:
+            for (int i = 0; i < roadMatrix.length; i++) {
+                for (int j = 0; j < roadMatrix[i].length; j++) {
+                    if (!roadMatrix[i][j].getDistance().equals(compareRoadMatrix[i][j].getDistance())) {
+                        isMatrixEquals = false;
+                        break outerloop;
+                    }
+                }
+            }
+            if (isMatrixEquals)
+                isFinished = true;
         }
-        System.out.println();
-        System.out.println("All shortest distance: ");
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < n; j++){
-                System.out.printf("%3d", matrixWeight[i][j]);
+
+        System.out.println("Shortest roads: ");
+        outputRoadMatrix(roadMatrix);
+    }
+
+    public static Road[][] getRoadMatrix(List<City> cityList, List<Road> roadList) {
+        Road[][] roadMatrix = new Road[cityList.size()][cityList.size()];
+        for (int i = 0; i < cityList.size(); i++){
+            for (int j = 0; j < cityList.size(); j++){
+                for (int k = 0; k < roadList.size(); k++){
+                    if (cityList.get(i).getId().equals(roadList.get(k).getCityFrom().getId())
+                            && cityList.get(j).getId().equals(roadList.get(k).getCityTo().getId())){
+                        roadMatrix[i][j] = roadList.get(k);
+                    }
+                }
+            }
+        }
+        return roadMatrix;
+    }
+
+    public static void initNullRoadElements(Road[][] roadMatrix, List<City> cityList) {
+        for (int i = 0; i < roadMatrix.length; i++){
+            for (int j = 0; j < roadMatrix[i].length; j++){
+                if (i==j){
+                    roadMatrix[i][j] = new Road(cityList.get(i), cityList.get(j), 0);
+                } else {
+                    if (roadMatrix[i][j] == null) {
+                        roadMatrix[i][j] = new Road(cityList.get(i), cityList.get(j), -1);
+                    }
+                }
+            }
+        }
+    }
+
+    public static Road[][] getCopyRoadMatrix(Road[][] roadMatrix) {
+        Road[][] copyRoadMatrix = new Road[roadMatrix.length][roadMatrix[0].length];
+        for (int i = 0; i < roadMatrix.length; i++) {
+            for (int j = 0; j < roadMatrix[i].length; j++) {
+                copyRoadMatrix[i][j] = roadMatrix[i][j].copy();
+            }
+        }
+        return copyRoadMatrix;
+    }
+
+    public static void outputRoadMatrix(Road[][] roadMatrix) {
+        for (int i = 0; i < roadMatrix.length; i++){
+            for (int j = 0; j < roadMatrix[i].length; j++){
+                System.out.print(roadMatrix[i][j].getDistance() + "\t");
             }
             System.out.println();
         }
-
-        System.out.println();
-        System.out.println("Matrix of vertices through which we found the shortest paths: ");
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < n; j++){
-                System.out.printf("%3d", matrixHistory[i][j]);
-            }
-            System.out.println();
-        }
-
-        System.out.println("Shortest distance between city from " + cityFrom
-                + " and city to " + cityTo + ": " + matrixWeight[cityFrom][cityTo]);*/
-
     }
 }
 
