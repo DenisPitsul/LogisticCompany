@@ -10,6 +10,10 @@
         select * from city
         where id = #{id}
     </select>
+    <select id="getAllCities" resultMap="city">
+        select * from city
+        order by id
+    </select>
     <select id="getCityByName" parameterType="java.lang.String" resultMap="city">
         select * from city
         where name = #{name}

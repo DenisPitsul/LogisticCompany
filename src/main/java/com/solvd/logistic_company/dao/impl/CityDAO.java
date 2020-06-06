@@ -6,6 +6,8 @@ import com.solvd.logistic_company.utils.MyBatisConfig;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import java.util.List;
+
 public class CityDAO implements ICityDAO {
     private static final Logger LOGGER = Logger.getLogger(CityDAO.class);
 
@@ -32,6 +34,17 @@ public class CityDAO implements ICityDAO {
         session.close();
 
         return city;
+    }
+
+    @Override
+    public List<City> getAllCities() {
+        SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession();
+        cityDAO = session.getMapper(cityDAOClass);
+        List<City> cities = cityDAO.getAllCities();
+        LOGGER.info("Got all city");
+        session.close();
+
+        return cities;
     }
 
     @Override

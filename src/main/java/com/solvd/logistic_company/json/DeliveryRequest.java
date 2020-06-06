@@ -2,6 +2,7 @@ package com.solvd.logistic_company.json;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solvd.logistic_company.entity.Delivery;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -61,4 +62,5 @@ public class DeliveryRequest {
         }
         return data;
     }
+
 }

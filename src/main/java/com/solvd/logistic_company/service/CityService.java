@@ -4,6 +4,8 @@ import com.solvd.logistic_company.dao.ICityDAO;
 import com.solvd.logistic_company.dao.impl.CityDAO;
 import com.solvd.logistic_company.entity.City;
 
+import java.util.List;
+
 public class CityService {
     private ICityDAO cityDAO = new CityDAO();
 
@@ -18,4 +20,6 @@ public class CityService {
     public void updateCity(City city) {
         cityDAO.updateCity(city);
     }
+
+    public List<City> getAllCities() { return cityDAO.getAllCities(); }
 }

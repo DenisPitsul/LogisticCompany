@@ -19,6 +19,7 @@
         select * from road
         inner join city as city_from on road.city_from_id = city_from.id
         inner join city as city_to on road.city_to_id = city_to.id
+        order by road.id
     </select>
     <select id="getRoadsByCityNames" parameterType="com.solvd.logistic_company.helper.CityNames" resultMap="road">
         select * from road
