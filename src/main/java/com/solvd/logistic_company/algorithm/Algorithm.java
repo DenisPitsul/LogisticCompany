@@ -17,6 +17,9 @@ public class Algorithm {
     }
 
     public static void findShortestRoads() {
+        String cityFrom = "Chernivtsi";
+        String cityTo = "Lviv";
+
         CityService cityService = new CityService();
         List<City> cityList = cityService.getAllCities();
 
@@ -59,6 +62,13 @@ public class Algorithm {
 
         System.out.println("Shortest roads: ");
         outputRoadMatrix(roadMatrix);
+
+        Road shortestRoad = findRoadByCityNames(roadMatrix, cityFrom, cityTo);
+        if (shortestRoad == null || shortestRoad.getDistance() < 0) {
+            System.out.println("There isn't any roads from " + cityFrom + " to " + cityTo);
+        } else {
+            System.out.println("Shortest road: " + shortestRoad);
+        }
     }
 
     public static Road[][] getRoadMatrix(List<City> cityList, List<Road> roadList) {
@@ -107,6 +117,19 @@ public class Algorithm {
             }
             System.out.println();
         }
+    }
+
+    public static Road findRoadByCityNames(Road[][] roadMatrix, String cityFrom, String cityTo) {
+        Road shortestRoad = null;
+        for (int i = 0; i < roadMatrix.length; i++) {
+            for (int j = 0; j < roadMatrix[i].length; j++) {
+                if (roadMatrix[i][j].getCityFrom().getName().equals(cityFrom)
+                        && roadMatrix[i][j].getCityTo().getName().equals(cityTo)) {
+                    shortestRoad = roadMatrix[i][j];
+                }
+            }
+        }
+        return shortestRoad;
     }
 }
 
