@@ -23,10 +23,17 @@ public class DeliveryParsingMenu {
         System.out.println("Enter path to the JSON file:");
         String path = in.nextLine();
         DeliveryRequest request = DeliveryRequest.fromJsonFile(Paths.get(path).toFile());
-        if (request == null) {
+/*        if (request == null) {
             System.out.println("Invalid file path or invalid JSON!");
             return;
-        }
+        }*/
+        do {
+            System.out.println("Invalid file path or invalid JSON!");
+            System.out.println("Enter path to the JSON file:");
+            path = in.nextLine();
+            request = DeliveryRequest.fromJsonFile(Paths.get(path).toFile());
+        } while (request == null);
+
         // check if the destination city exists
         City destinationCity = cityService.getCityByName(request.getCityTo());
         if (destinationCity == null) {
