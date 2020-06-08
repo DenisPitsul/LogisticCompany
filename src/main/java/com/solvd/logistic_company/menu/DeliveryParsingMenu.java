@@ -29,8 +29,6 @@ public class DeliveryParsingMenu {
             path = in.nextLine();
             request = DeliveryRequest.fromJsonFile(Paths.get(path).toFile());
         }
-
-
         // check if the destination city exists
         City destinationCity = cityService.getCityByName(request.getCityTo());
         if (destinationCity == null) {
