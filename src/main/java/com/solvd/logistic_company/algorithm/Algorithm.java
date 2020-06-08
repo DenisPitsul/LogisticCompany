@@ -4,22 +4,14 @@ import com.solvd.logistic_company.entity.City;
 import com.solvd.logistic_company.entity.Road;
 import com.solvd.logistic_company.service.CityService;
 import com.solvd.logistic_company.service.RoadService;
-import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Algorithm {
 
-    public static void main(String[] args) {
-        findShortestRoads();
-    }
+    public static void findShortestRoads(String cityFrom, String cityTo) {
 
-    public static void findShortestRoads() {
-        String cityFrom = "Kiev";
-        String cityTo = "Lviv";
 
         CityService cityService = new CityService();
         List<City> cityList = cityService.getAllCities();
@@ -66,7 +58,7 @@ public class Algorithm {
 
         Road shortestRoad = findRoadByCityNames(roadMatrix, cityFrom, cityTo);
         if (shortestRoad == null || shortestRoad.getDistance() < 0) {
-            System.out.println("There isn't any roads from " + cityFrom + " to " + cityTo);
+            System.out.println("There are no roads from " + cityFrom + " to " + cityTo);
         } else {
             System.out.println("Shortest road: " + shortestRoad);
         }
@@ -79,12 +71,13 @@ public class Algorithm {
 
     public static Road[][] getRoadMatrix(List<City> cityList, List<Road> roadList) {
         Road[][] roadMatrix = new Road[cityList.size()][cityList.size()];
-        for (int i = 0; i    < cityList.size(); i++){
-            for (int j = 0; j < cityList.size(); j++){
-                for (int k = 0; k < roadList.size(); k++){
+        for (int i = 0; i < cityList.size(); i++) {
+            for (int j = 0; j < cityList.size(); j++) {
+                for (int k = 0; k < roadList.size(); k++) {
                     if (cityList.get(i).getId().equals(roadList.get(k).getCityFrom().getId())
-                            && cityList.get(j).getId().equals(roadList.get(k).getCityTo().getId())){
+                            && cityList.get(j).getId().equals(roadList.get(k).getCityTo().getId())) {
                         roadMatrix[i][j] = roadList.get(k);
+                        //  roadMatrix[j][i] = roadList.get(k); // roads are two way
                     }
                 }
             }
@@ -93,9 +86,9 @@ public class Algorithm {
     }
 
     public static void initNullRoadElements(Road[][] roadMatrix, List<City> cityList) {
-        for (int i = 0; i < roadMatrix.length; i++){
-            for (int j = 0; j < roadMatrix[i].length; j++){
-                if (i==j){
+        for (int i = 0; i < roadMatrix.length; i++) {
+            for (int j = 0; j < roadMatrix[i].length; j++) {
+                if (i == j) {
                     roadMatrix[i][j] = new Road(cityList.get(i), cityList.get(j), 0);
                 } else {
                     if (roadMatrix[i][j] == null) {
@@ -117,8 +110,8 @@ public class Algorithm {
     }
 
     public static void outputRoadMatrix(Road[][] roadMatrix) {
-        for (int i = 0; i < roadMatrix.length; i++){
-            for (int j = 0; j < roadMatrix[i].length; j++){
+        for (int i = 0; i < roadMatrix.length; i++) {
+            for (int j = 0; j < roadMatrix[i].length; j++) {
                 System.out.print(roadMatrix[i][j].getDistance() + "\t");
             }
             System.out.println();

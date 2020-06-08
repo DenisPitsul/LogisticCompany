@@ -1,5 +1,6 @@
 package com.solvd.logistic_company.menu;
 
+import com.solvd.logistic_company.algorithm.Algorithm;
 import com.solvd.logistic_company.entity.City;
 import com.solvd.logistic_company.json.DeliveryRequest;
 import com.solvd.logistic_company.service.CityService;
@@ -10,14 +11,14 @@ import java.util.Scanner;
 
 public class DeliveryParsingMenu {
 
-    private static final Logger LOGGER = Logger.getLogger(UserMenu.class);
+    private static final Logger LOGGER = Logger.getLogger(DeliveryParsingMenu.class);
 
     private CityService cityService = new CityService();
 
     private Scanner in;
 
     public void inputParsingOperation() {
-        //to do - write parsing delivery operation
+        // parsing delivery operation
         in = new Scanner(System.in);
         System.out.println("Enter path to the JSON file:");
         String path = in.nextLine();
@@ -40,15 +41,18 @@ public class DeliveryParsingMenu {
             System.out.println("Unknown departure city " + request.getCityFrom() + "!");
             LOGGER.warn("Unknown departure city " + request.getCityFrom() + "!");
         }
-        //check there's enough storageCapacity in a destination City
-        if (destinationCity.getStorageCapacity() >= request.getCargo()) {
-            System.out.println("The cargo can be stored in " + request.getCityTo());
-            LOGGER.info("The cargo can be stored in " + request.getCityTo());
-        } else {
-            System.out.println("There is not enough storage capacity in " + request.getCityTo());
-            LOGGER.warn("here is not enough storage capacity in " + request.getCityTo());
+        else {
+            Algorithm.findShortestRoads(request.getCityFrom(), request.getCityTo());
         }
-    }
+        //check there's enough storageCapacity in a destination City
+//        if (destinationCity.getStorageCapacity() >= request.getCargo()) {
+//            System.out.println("The cargo can be stored in " + request.getCityTo());
+//            LOGGER.info("The cargo can be stored in " + request.getCityTo());
+//        } else {
+//            System.out.println("There is not enough storage capacity in " + request.getCityTo());
+//            LOGGER.warn("here is not enough storage capacity in " + request.getCityTo());
+//        }
+}
 
 
         // TODO: calculate the nearest city with free capacity
