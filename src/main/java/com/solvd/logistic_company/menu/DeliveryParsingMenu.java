@@ -23,17 +23,12 @@ public class DeliveryParsingMenu {
         System.out.println("Enter path to the JSON file:");
         String path = in.nextLine();
         DeliveryRequest request = DeliveryRequest.fromJsonFile(Paths.get(path).toFile());
-/*        if (request == null) {
-            System.out.println("Invalid file path or invalid JSON!");
-            return;
-        }*/
-        do {
+        while (request == null) {
             System.out.println("Invalid file path or invalid JSON!");
             System.out.println("Enter path to the JSON file:");
             path = in.nextLine();
             request = DeliveryRequest.fromJsonFile(Paths.get(path).toFile());
-        } while (request == null);
-
+        }
         // check if the destination city exists
         City destinationCity = cityService.getCityByName(request.getCityTo());
         if (destinationCity == null) {
@@ -47,10 +42,11 @@ public class DeliveryParsingMenu {
         if (departureCity == null) {
             System.out.println("Unknown departure city " + request.getCityFrom() + "!");
             LOGGER.warn("Unknown departure city " + request.getCityFrom() + "!");
-        }
-        else {
+        } else {
             Algorithm.findShortestRoads(request.getCityFrom(), request.getCityTo());
         }
+
+        
         //check there's enough storageCapacity in a destination City
 //        if (destinationCity.getStorageCapacity() >= request.getCargo()) {
 //            System.out.println("The cargo can be stored in " + request.getCityTo());
@@ -59,9 +55,9 @@ public class DeliveryParsingMenu {
 //            System.out.println("There is not enough storage capacity in " + request.getCityTo());
 //            LOGGER.warn("here is not enough storage capacity in " + request.getCityTo());
 //        }
-}
+    }
 
 
-        // TODO: calculate the nearest city with free capacity
+    // TODO: calculate the nearest city with free capacity
 
 }
