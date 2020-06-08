@@ -6,6 +6,7 @@ import com.solvd.logistic_company.service.CityService;
 import com.solvd.logistic_company.service.RoadService;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -17,7 +18,7 @@ public class Algorithm {
     }
 
     public static void findShortestRoads() {
-        String cityFrom = "Chernivtsi";
+        String cityFrom = "Kiev";
         String cityTo = "Lviv";
 
         CityService cityService = new CityService();
@@ -69,11 +70,16 @@ public class Algorithm {
         } else {
             System.out.println("Shortest road: " + shortestRoad);
         }
+
+        List<Road> roadListByCityFrom = findRoadsByCityFrom(roadMatrix, cityFrom);
+        City nearestCity = findNearestCityTo(roadListByCityFrom);
+
+        System.out.println("Nearest city: " + nearestCity);
     }
 
     public static Road[][] getRoadMatrix(List<City> cityList, List<Road> roadList) {
         Road[][] roadMatrix = new Road[cityList.size()][cityList.size()];
-        for (int i = 0; i < cityList.size(); i++){
+        for (int i = 0; i    < cityList.size(); i++){
             for (int j = 0; j < cityList.size(); j++){
                 for (int k = 0; k < roadList.size(); k++){
                     if (cityList.get(i).getId().equals(roadList.get(k).getCityFrom().getId())
@@ -130,6 +136,36 @@ public class Algorithm {
             }
         }
         return shortestRoad;
+    }
+
+    public static List<Road> findRoadsByCityFrom(Road[][] roadMatrix, String cityFrom) {
+        List<Road> roadList = new ArrayList<>();
+        for (int i = 0; i < roadMatrix.length; i++) {
+            for (int j = 0; j < roadMatrix[i].length; j++) {
+                if (roadMatrix[i][j].getCityFrom().getName().equals(cityFrom)) {
+                    roadList.add(roadMatrix[i][j]);
+                }
+            }
+        }
+        return roadList;
+    }
+
+    public static City findNearestCityTo(List<Road> roadList) {
+        City nearestCity;
+        Road min = null;
+        for (int i = 0; i < roadList.size(); i++) {
+            if (roadList.get(i).getDistance() > 0) {
+                min = roadList.get(i);
+                break;
+            }
+        }
+        for (int i = 0; i < roadList.size(); i++) {
+            if (roadList.get(i).getDistance() > 0)
+                if (min.getDistance() > roadList.get(i).getDistance())
+                    min = roadList.get(i);
+        }
+        nearestCity = min.getCityTo();
+        return nearestCity;
     }
 }
 
