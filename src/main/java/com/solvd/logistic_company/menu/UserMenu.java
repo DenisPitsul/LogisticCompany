@@ -53,7 +53,13 @@ public class UserMenu {
 
     private void openDeliveryParsingMenu(){
         DeliveryParsingMenu deliveryParsingMenu = new DeliveryParsingMenu();
-        deliveryParsingMenu.inputParsingOperation();
+        System.out.println("1 - add delivery; 2 - exit: ");
+        int choise = in.nextInt();
+        if (choise == 1){
+            deliveryParsingMenu.inputParsingOperation();
+        } else {
+            System.exit(0);
+        }
     }
 }
 

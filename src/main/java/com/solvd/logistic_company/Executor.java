@@ -5,7 +5,6 @@ import com.solvd.logistic_company.entity.Delivery;
 import com.solvd.logistic_company.entity.Road;
 import com.solvd.logistic_company.entity.User;
 import com.solvd.logistic_company.helper.CityNames;
-import com.solvd.logistic_company.menu.MainMenu;
 import com.solvd.logistic_company.menu.UserMenu;
 import com.solvd.logistic_company.service.CityService;
 import com.solvd.logistic_company.service.DeliveryService;
@@ -20,8 +19,8 @@ public class Executor {
 
     public static void main(String[] args) {
 
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.mainMenu();
+        UserMenu userMenu = new UserMenu();
+        userMenu.openMainMenu();
 
         // testGetUserByUserName();
 
@@ -92,32 +91,4 @@ public class Executor {
         }
     }
 
-    private void floydWarshall(Road[][] roadsMatrix) {
-        int dist[][] = new int[4][4];
-        int i, j, k;
-
-        for (i = 0; i < 4; i++)
-            for (j = 0; j < 4; j++)
-                dist[i][j] = roadsMatrix[i][j].getDistance();
-
-        for (k = 0; k < 4; k++) {
-            for (i = 0; i < 4; i++) {
-                for (j = 0; j < 4; j++) {
-                    if (dist[i][k] + dist[k][j] < dist[i][j])
-                        dist[i][j] = dist[i][k] + dist[k][j];
-                }
-            }
-        }
-
-        printSolution(dist);
-    }
-
-    void printSolution(int dist[][]) {
-        for (int i=0; i<4; ++i) {
-            for (int j=0; j<4; ++j) {
-                System.out.print(dist[i][j]+"   ");
-            }
-            System.out.println();
-        }
-    }
 }

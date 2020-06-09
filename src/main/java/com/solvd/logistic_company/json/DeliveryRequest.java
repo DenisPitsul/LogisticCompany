@@ -2,6 +2,7 @@ package com.solvd.logistic_company.json;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solvd.logistic_company.exception.IncorrectJsonPath;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -57,7 +58,7 @@ public class DeliveryRequest {
             data = mapper.readValue(file, DeliveryRequest.class);
 
         } catch (IOException e) {
-            LOGGER.error("Error in loadDeliveryFromFile:", e);
+            LOGGER.error(e.getMessage());
         }
         return data;
     }
