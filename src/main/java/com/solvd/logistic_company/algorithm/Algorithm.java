@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Algorithm {
 
+
     public static void findShortestRoads(String cityFrom, String cityTo) {
 
 
@@ -63,10 +64,10 @@ public class Algorithm {
             System.out.println("Shortest road: " + shortestRoad);
         }
 
-        List<Road> roadListByCityFrom = findRoadsByCityFrom(roadMatrix, cityFrom);
-        City nearestCity = findNearestCityTo(roadListByCityFrom);
-
-        System.out.println("Nearest city: " + nearestCity);
+//        List<Road> roadListByCityFrom = findRoadsByCityFrom(roadMatrix, cityFrom);
+//        City nearestCity = findNearestCityTo(roadListByCityFrom);
+//
+//        System.out.println("Nearest city: " + nearestCity);
     }
 
     public static Road[][] getRoadMatrix(List<City> cityList, List<Road> roadList) {
