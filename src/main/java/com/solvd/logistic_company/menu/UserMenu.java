@@ -54,8 +54,8 @@ public class UserMenu {
     private void openDeliveryParsingMenu(){
         DeliveryParsingMenu deliveryParsingMenu = new DeliveryParsingMenu();
         System.out.println("1 - add delivery; 2 - exit: ");
-        int choise = in.nextInt();
-        if (choise == 1){
+        int choice = in.nextInt();
+        if (choice == 1){
             deliveryParsingMenu.inputParsingOperation();
         } else {
             System.exit(0);

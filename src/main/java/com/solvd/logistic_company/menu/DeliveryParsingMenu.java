@@ -6,7 +6,6 @@ import com.solvd.logistic_company.exception.IncorrectJsonPath;
 import com.solvd.logistic_company.json.DeliveryRequest;
 import com.solvd.logistic_company.service.CityService;
 import org.apache.log4j.Logger;
-import org.omg.CORBA.INITIALIZE;
 
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -41,18 +40,27 @@ public class DeliveryParsingMenu {
                 Algorithm.findShortestRoads(request.getCityFrom(), request.getCityTo());
             }
 
-            //check there's enough storageCapacity in a destination City
-//        if (destinationCity.getStorageCapacity() >= request.getCargo()) {
-//            System.out.println("The cargo can be stored in " + request.getCityTo());
-//            LOGGER.info("The cargo can be stored in " + request.getCityTo());
-//        } else {
-//            System.out.println("There is not enough storage capacity in " + request.getCityTo());
-//            LOGGER.warn("here is not enough storage capacity in " + request.getCityTo());
-//        }
+            //   check if there's enough storageCapacity in a destination City
+            if (destinationCity.getStorageCapacity() >= request.getCargo()) {
+                System.out.println("The cargo can be stored in " + request.getCityTo());
+                LOGGER.info("The cargo can be stored in " + request.getCityTo());
+            } else {
+                System.out.println("There is not enough storage capacity in " + request.getCityTo());
+                LOGGER.warn("here is not enough storage capacity in " + request.getCityTo());
+                System.out.println("Do you want to calculate a route to the nearest city?");
+                System.out.println("1 - yes; 2 - exit: ");
+                int choice = in.nextInt();
+                if (choice == 1) {
+                    // calc nearest city and add it to alg;
+                    System.out.println("This feature doesn't exist"); //This option will be replaced by calculation
+                } else {
+                    System.exit(0);
+                }
 
 
-            // TODO: calculate the nearest city with free capacity
+                // TODO: calculate the nearest city with free capacity
 
+            }
         }
     }
 }
