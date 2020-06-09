@@ -32,11 +32,6 @@ public class Algorithm {
         } else {
             System.out.println("Shortest road: " + shortestRoad);
         }
-
-//        List<Road> roadListByCityFrom = findRoadsByCityFrom(roadMatrix, cityFrom);
-//        City nearestCity = findNearestCityTo(roadListByCityFrom);
-//
-//        System.out.println("Nearest city: " + nearestCity);
     }
 
     private static void calculateTotalDistances(Road[][] roadMatrix) {
