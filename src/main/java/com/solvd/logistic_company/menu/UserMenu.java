@@ -28,7 +28,23 @@ public class UserMenu {
                     String userName = in.nextLine();
                     User user = getUserFromDB(userName);
                     if (user != null) {
-                        openDeliveryParsingMenu();
+                        System.out.println("Do you want to add new delivery? 1 - yes; 2 - no: ");
+                        int choice = in.nextInt();
+                        do {
+                            switch (choice){
+                                case 1:
+                                    openDeliveryParsingMenu();
+                                    break;
+                                case 2:
+                                    LOGGER.info("Exit");
+                                    break;
+                                default:
+                                    LOGGER.info("Incorrect data!");
+                                    break;
+                            }
+                            System.out.println("Do you want to add new delivery? 1 - yes; 2 - no: ");
+                            choice = in.nextInt();
+                        } while (choice == 1);
                     }
                 }
             } catch(InputMismatchException e){
@@ -51,15 +67,9 @@ public class UserMenu {
         return user;
     }
 
-    private void openDeliveryParsingMenu(){
+    private void openDeliveryParsingMenu() {
         DeliveryParsingMenu deliveryParsingMenu = new DeliveryParsingMenu();
-        System.out.println("1 - add delivery; 2 - exit: ");
-        int choice = in.nextInt();
-        if (choice == 1){
-            deliveryParsingMenu.inputParsingOperation();
-        } else {
-            System.exit(0);
-        }
+        deliveryParsingMenu.deliveryMenu();
     }
 }
 
