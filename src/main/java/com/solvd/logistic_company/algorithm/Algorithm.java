@@ -10,10 +10,7 @@ import java.util.List;
 
 public class Algorithm {
 
-
     public static void findShortestRoads(String cityFrom, String cityTo) {
-
-
         CityService cityService = new CityService();
         List<City> cityList = cityService.getAllCities();
 
@@ -24,7 +21,20 @@ public class Algorithm {
         initNullRoadElements(roadMatrix, cityList);
         System.out.println("Roads from database: ");
         outputRoadMatrix(roadMatrix);
+        calculateTotalDistances(roadMatrix);
 
+        System.out.println("Shortest roads: ");
+        outputRoadMatrix(roadMatrix);
+
+        Road shortestRoad = findRoadByCityNames(roadMatrix, cityFrom, cityTo);
+        if (shortestRoad == null || shortestRoad.getDistance() < 0) {
+            System.out.println("There are no roads from " + cityFrom + " to " + cityTo);
+        } else {
+            System.out.println("Shortest road: " + shortestRoad);
+        }
+    }
+
+    private static void calculateTotalDistances(Road[][] roadMatrix) {
         boolean isFinished = false;
         while (!isFinished) {
             Road[][] compareRoadMatrix = getCopyRoadMatrix(roadMatrix);
@@ -53,21 +63,6 @@ public class Algorithm {
             if (isMatrixEquals)
                 isFinished = true;
         }
-
-        System.out.println("Shortest roads: ");
-        outputRoadMatrix(roadMatrix);
-
-        Road shortestRoad = findRoadByCityNames(roadMatrix, cityFrom, cityTo);
-        if (shortestRoad == null || shortestRoad.getDistance() < 0) {
-            System.out.println("There are no roads from " + cityFrom + " to " + cityTo);
-        } else {
-            System.out.println("Shortest road: " + shortestRoad);
-        }
-
-//        List<Road> roadListByCityFrom = findRoadsByCityFrom(roadMatrix, cityFrom);
-//        City nearestCity = findNearestCityTo(roadListByCityFrom);
-//
-//        System.out.println("Nearest city: " + nearestCity);
     }
 
     public static Road[][] getRoadMatrix(List<City> cityList, List<Road> roadList) {
@@ -132,7 +127,7 @@ public class Algorithm {
         return shortestRoad;
     }
 
-    public static List<Road> findRoadsByCityFrom(Road[][] roadMatrix, String cityFrom) {
+    private static List<Road> findRoadsByCityFrom(Road[][] roadMatrix, String cityFrom) {
         List<Road> roadList = new ArrayList<>();
         for (int i = 0; i < roadMatrix.length; i++) {
             for (int j = 0; j < roadMatrix[i].length; j++) {
@@ -144,7 +139,7 @@ public class Algorithm {
         return roadList;
     }
 
-    public static City findNearestCityTo(List<Road> roadList) {
+    private static City findNearestCityTo(List<Road> roadList) {
         City nearestCity;
         Road min = null;
         for (int i = 0; i < roadList.size(); i++) {
@@ -158,8 +153,35 @@ public class Algorithm {
                 if (min.getDistance() > roadList.get(i).getDistance())
                     min = roadList.get(i);
         }
+        if (min == null) {
+            return null;
+        }
         nearestCity = min.getCityTo();
         return nearestCity;
+    }
+
+    public static City findNearestCity(String cityFrom, int minCapacity) {
+        CityService cityService = new CityService();
+        List<City> allCities = cityService.getAllCities();
+
+        List<City> cityList = new ArrayList<>();
+        for (City city :
+                allCities) {
+            if (city.getName().equals(cityFrom) || city.getStorageCapacity() >= minCapacity) {
+                cityList.add(city);
+            }
+        }
+
+        RoadService roadService = new RoadService();
+        List<Road> roadList = roadService.getAllRoads();
+
+        Road[][] roadMatrix = getRoadMatrix(cityList, roadList);
+        initNullRoadElements(roadMatrix, cityList);
+        calculateTotalDistances(roadMatrix);
+
+        List<Road> roadsFromStartingCity = findRoadsByCityFrom(roadMatrix, cityFrom);
+
+        return findNearestCityTo(roadsFromStartingCity);
     }
 }
 

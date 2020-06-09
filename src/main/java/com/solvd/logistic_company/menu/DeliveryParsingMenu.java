@@ -46,22 +46,27 @@ public class DeliveryParsingMenu {
                     System.out.println("There is not enough storage capacity in " + request.getCityTo());
                     LOGGER.warn("here is not enough storage capacity in " + request.getCityTo());
                     System.out.println("Do you want to calculate a route to the nearest city?");
-                    System.out.println("1 - yes; 2 - exit: ");
+                    System.out.println("1 - yes; other - exit: ");
                     int choice = in.nextInt();
                     if (choice == 1) {
-                        // calc nearest city and add it to alg;
-                        System.out.println("This feature doesn't exist"); //This option will be replaced by calculation
+                        City nearestCity = Algorithm.findNearestCity(request.getCityFrom(), request.getCargo());
+                        if (nearestCity == null) {
+                            System.out.println("There is no reachable cities with capacity over " + request.getCargo());
+                        } else {
+                            System.out.println("The cargo can be stored in " + nearestCity.getName() +
+                                    " (capacity: " + nearestCity.getStorageCapacity() + ")");
+                        }
+
                     } else {
                         System.exit(0);
                     }
-
-                    // TODO: calculate the nearest city with free capacity
                 }
             } else {
                 throw new IncorrectJsonPath();
             }
-        } catch (IncorrectJsonPath e){
-            LOGGER.error(e.getMessage());
+        } catch (IncorrectJsonPath e) {
+            System.out.println(e.getMessage());
+            LOGGER.error(e);
         }
     }
 
