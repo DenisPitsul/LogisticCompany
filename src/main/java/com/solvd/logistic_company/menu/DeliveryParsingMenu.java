@@ -19,7 +19,7 @@ public class DeliveryParsingMenu {
 
     private Scanner in;
 
-    public void inputParsingOperation(String path) {
+    private void inputParsingOperation(String path) {
         try {
             DeliveryRequest request = DeliveryRequest.fromJsonFile(Paths.get(path).toFile());
             if (request != null) {

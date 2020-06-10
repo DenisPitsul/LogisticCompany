@@ -20,37 +20,32 @@ public class UserMenu {
         this.userService = new UserService();
     }
 
-    public void openMainMenu(){
-            try{
-                while (true) {
-                    in = new Scanner(System.in);
-                    System.out.println("Enter user which have to be login: ");
-                    String userName = in.nextLine();
-                    User user = getUserFromDB(userName);
-                    if (user != null) {
-                        System.out.println("Do you want to add new delivery? 1 - yes; 2 - no: ");
-                        int choice = in.nextInt();
-                        do {
-                            switch (choice){
-                                case 1:
-                                    openDeliveryParsingMenu();
-                                    break;
-                                case 2:
-                                    LOGGER.info("Exit");
-                                    break;
-                                default:
-                                    LOGGER.info("Incorrect data!");
-                                    break;
-                            }
-                            System.out.println("Do you want to add new delivery? 1 - yes; 2 - no: ");
-                            choice = in.nextInt();
-                        } while (choice == 1);
+    public void openMainMenu() {
+        try {
+            in = new Scanner(System.in);
+            System.out.println("Enter user which have to be login: ");
+            String userName = in.nextLine();
+            User user = getUserFromDB(userName);
+            if (user != null) {
+                openDeliveryParsingMenu();
+                System.out.println("Do you want to add new delivery? 1 - yes; 2 - no: ");
+                int choice = in.nextInt();
+                switch (choice) {
+                    case 1:
+                        openDeliveryParsingMenu();
+                        break;
+                    case 2:
+                        LOGGER.info("Exit");
+                        break;
+                    default:
+                        LOGGER.info("Incorrect data!");
+                        break;
                     }
                 }
             } catch(InputMismatchException e){
-                LOGGER.error(e.getStackTrace());
-            }
+            LOGGER.error(e.getStackTrace());
         }
+    }
 
     private User getUserFromDB(String userName){
         User user = userService.getUserByUserName(userName);

@@ -19,12 +19,6 @@ public class Algorithm {
 
         Road[][] roadMatrix = getRoadMatrix(cityList, roadList);
         initNullRoadElements(roadMatrix, cityList);
-        System.out.println("Roads from database: ");
-        outputRoadMatrix(roadMatrix);
-        calculateTotalDistances(roadMatrix);
-
-        System.out.println("Shortest roads: ");
-        outputRoadMatrix(roadMatrix);
 
         Road shortestRoad = findRoadByCityNames(roadMatrix, cityFrom, cityTo);
         if (shortestRoad == null || shortestRoad.getDistance() < 0) {

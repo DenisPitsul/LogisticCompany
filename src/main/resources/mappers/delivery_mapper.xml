@@ -28,7 +28,7 @@
         and city_to.name = #{cityToName}
     </select>
     <insert id="addDelivery" parameterType="com.solvd.logistic_company.entity.Delivery">
-        insert into delivery(city_from_id, city_to_id, cargo)
-        values(#{cityFrom.id}, #{cityTo.id}, #{cargo})
+    insert into delivery(city_from_id, city_to_id, cargo)
+    values(#{cityFrom.id}, #{cityTo.id}, #{cargo})
     </insert>
 </mapper>
