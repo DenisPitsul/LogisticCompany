@@ -93,6 +93,7 @@ public class DeliveryParsingMenu {
                                 System.out.println("Cargo stored in: " + nearestCity.getName());
                             }
                         }
+
                     } else {
                         System.exit(0);
                     }
@@ -107,9 +108,26 @@ public class DeliveryParsingMenu {
     }
 
     public void deliveryMenu() {
-        in = new Scanner(System.in);
-        System.out.println("Enter path to the JSON file:");
-        String path = in.nextLine();
-        inputParsingOperation(path);
+
+            in = new Scanner(System.in);
+            System.out.println("Do you want to add new delivery? 1 - yes; 2 - no:");
+            int choice = in.nextInt();
+            do {
+                switch (choice){
+                    case 1:
+                        in = new Scanner(System.in);
+                        System.out.println("Enter path to the JSON file:");
+                        String path = in.nextLine();
+                        inputParsingOperation(path);
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        break;
+                }
+                System.out.println("Do you want to add new delivery? 1 - yes; 2 - no:");
+                choice = in.nextInt();
+            } while (choice == 1 );
+        }
     }
-}
+

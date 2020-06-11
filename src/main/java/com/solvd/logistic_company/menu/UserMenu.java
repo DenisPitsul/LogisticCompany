@@ -28,19 +28,6 @@ public class UserMenu {
             User user = getUserFromDB(userName);
             if (user != null) {
                 openDeliveryParsingMenu();
-                System.out.println("Do you want to add new delivery? 1 - yes; 2 - no: ");
-                int choice = in.nextInt();
-                switch (choice) {
-                    case 1:
-                        openDeliveryParsingMenu();
-                        break;
-                    case 2:
-                        LOGGER.info("Exit");
-                        break;
-                    default:
-                        LOGGER.info("Incorrect data!");
-                        break;
-                    }
                 }
             } catch(InputMismatchException e){
             LOGGER.error(e.getStackTrace());
@@ -51,8 +38,8 @@ public class UserMenu {
         User user = userService.getUserByUserName(userName);
         if (user != null) {
             LOGGER.info("-------------------------------");
-            LocalStorage.setAuthUser(user);
             LOGGER.debug("Authorized by: " + user);
+            LocalStorage.setAuthUser(user);
             LOGGER.info("-------------------------------");
         } else {
             LOGGER.info("-------------------------------");
