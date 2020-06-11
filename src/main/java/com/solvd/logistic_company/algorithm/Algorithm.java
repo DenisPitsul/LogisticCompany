@@ -67,7 +67,6 @@ public class Algorithm {
                     if (cityList.get(i).getId().equals(roadList.get(k).getCityFrom().getId())
                             && cityList.get(j).getId().equals(roadList.get(k).getCityTo().getId())) {
                         roadMatrix[i][j] = roadList.get(k);
-                        //  roadMatrix[j][i] = roadList.get(k); // roads are two way
                     }
                 }
             }
@@ -97,15 +96,6 @@ public class Algorithm {
             }
         }
         return copyRoadMatrix;
-    }
-
-    public static void outputRoadMatrix(Road[][] roadMatrix) {
-        for (int i = 0; i < roadMatrix.length; i++) {
-            for (int j = 0; j < roadMatrix[i].length; j++) {
-                System.out.print(roadMatrix[i][j].getDistance() + "\t");
-            }
-            System.out.println();
-        }
     }
 
     public static Road findRoadByCityNames(Road[][] roadMatrix, String cityFrom, String cityTo) {

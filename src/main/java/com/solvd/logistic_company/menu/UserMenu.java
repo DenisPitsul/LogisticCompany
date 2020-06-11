@@ -28,13 +28,13 @@ public class UserMenu {
             User user = getUserFromDB(userName);
             if (user != null) {
                 openDeliveryParsingMenu();
-                }
-            } catch(InputMismatchException e){
+            }
+        } catch (InputMismatchException e) {
             LOGGER.error(e.getStackTrace());
         }
     }
 
-    private User getUserFromDB(String userName){
+    private User getUserFromDB(String userName) {
         User user = userService.getUserByUserName(userName);
         if (user != null) {
             LOGGER.info("-------------------------------");

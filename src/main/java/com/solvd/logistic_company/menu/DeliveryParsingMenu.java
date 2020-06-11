@@ -9,7 +9,6 @@ import com.solvd.logistic_company.service.CityService;
 import com.solvd.logistic_company.service.DeliveryService;
 import org.apache.log4j.Logger;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
@@ -48,7 +47,6 @@ public class DeliveryParsingMenu {
                     System.out.println("1 - yes; other - exit: ");
                     choice = in.nextInt();
                     if (choice == 1) {
-
                         int cargo = request.getCargo();
                         DeliveryService deliveryService = new DeliveryService();
                         Delivery delivery = new Delivery(departureCity, destinationCity, cargo);
@@ -58,9 +56,9 @@ public class DeliveryParsingMenu {
                         destinationCity.setStorageCapacity(newStorageCapacity);
                         cityService.updateCity(destinationCity);
                         LOGGER.info("DB table updated");
-                        LOGGER.info("Cargo stored in: "+ request.getCityTo());
+                        LOGGER.info("Cargo stored in: " + request.getCityTo());
                         System.out.println("Cargo stored in: " + request.getCityTo());
-                }
+                    }
                 } else {
                     System.out.println("There is not enough storage capacity in " + request.getCityTo());
                     LOGGER.warn("There is not enough storage capacity in " + request.getCityTo());
@@ -79,7 +77,6 @@ public class DeliveryParsingMenu {
                             System.out.println("1 - yes; other - exit: ");
                             choice = in.nextInt();
                             if (choice == 1) {
-
                                 int cargo = request.getCargo();
                                 DeliveryService deliveryService = new DeliveryService();
                                 Delivery delivery = new Delivery(departureCity, nearestCity, cargo);
@@ -93,7 +90,6 @@ public class DeliveryParsingMenu {
                                 System.out.println("Cargo stored in: " + nearestCity.getName());
                             }
                         }
-
                     } else {
                         System.exit(0);
                     }
@@ -102,32 +98,22 @@ public class DeliveryParsingMenu {
                 throw new IncorrectJsonPath();
             }
         } catch (IncorrectJsonPath e) {
-            System.out.println(e.getMessage());
             LOGGER.error(e);
         }
     }
 
     public void deliveryMenu() {
-
+        in = new Scanner(System.in);
+        System.out.println("Do you want to add new delivery? 1 - yes; 2 - no:");
+        int choice = in.nextInt();
+        while (choice == 1) {
             in = new Scanner(System.in);
+            System.out.println("Enter path to the JSON file:");
+            String path = in.nextLine();
+            inputParsingOperation(path);
             System.out.println("Do you want to add new delivery? 1 - yes; 2 - no:");
-            int choice = in.nextInt();
-            do {
-                switch (choice){
-                    case 1:
-                        in = new Scanner(System.in);
-                        System.out.println("Enter path to the JSON file:");
-                        String path = in.nextLine();
-                        inputParsingOperation(path);
-                        break;
-                    case 2:
-                        break;
-                    default:
-                        break;
-                }
-                System.out.println("Do you want to add new delivery? 1 - yes; 2 - no:");
-                choice = in.nextInt();
-            } while (choice == 1 );
+            choice = in.nextInt();
         }
     }
+}
 
