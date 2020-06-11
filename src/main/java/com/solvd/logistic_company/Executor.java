@@ -73,7 +73,7 @@ public class Executor {
         LOGGER.debug("Deliveries by city names: " + deliveryList);
     }
 
-    public static void testAddDelivery() {
+  /*  public static void testAddDelivery() {
         CityService cityService = new CityService();
         City cityFrom = cityService.getCityByName("Chernivtsi");
         City cityTo = cityService.getCityByName("Kiev");
@@ -90,6 +90,6 @@ public class Executor {
         } else {
             LOGGER.info("There is no enough space on storage capacity in city " + cityTo.getName());
         }
-    }
+    }*/
 
 }

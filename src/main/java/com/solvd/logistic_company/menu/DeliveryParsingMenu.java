@@ -2,9 +2,11 @@ package com.solvd.logistic_company.menu;
 
 import com.solvd.logistic_company.algorithm.Algorithm;
 import com.solvd.logistic_company.entity.City;
+import com.solvd.logistic_company.entity.Delivery;
 import com.solvd.logistic_company.exception.IncorrectJsonPath;
 import com.solvd.logistic_company.json.DeliveryRequest;
 import com.solvd.logistic_company.service.CityService;
+import com.solvd.logistic_company.service.DeliveryService;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
@@ -42,21 +44,55 @@ public class DeliveryParsingMenu {
                 if (destinationCity.getStorageCapacity() >= request.getCargo()) {
                     System.out.println("The cargo can be stored in " + request.getCityTo());
                     LOGGER.info("The cargo can be stored in " + request.getCityTo());
-                } else {
-                    System.out.println("There is not enough storage capacity in " + request.getCityTo());
-                    LOGGER.warn("here is not enough storage capacity in " + request.getCityTo());
-                    System.out.println("Do you want to calculate a route to the nearest city?");
+                    System.out.println("Do you want store cargo in " + request.getCityTo());
                     System.out.println("1 - yes; other - exit: ");
                     int choice = in.nextInt();
                     if (choice == 1) {
+
+                        int cargo = request.getCargo();
+                        DeliveryService deliveryService = new DeliveryService();
+                        Delivery delivery = new Delivery(departureCity, destinationCity, cargo);
+                        deliveryService.addDelivery(delivery);
+
+                        int newStorageCapacity = destinationCity.getStorageCapacity() - delivery.getCargo();
+                        destinationCity.setStorageCapacity(newStorageCapacity);
+                        cityService.updateCity(destinationCity);
+                        LOGGER.info("DB table updated");
+                        LOGGER.info("Cargo stored in: "+ request.getCityTo());
+                        System.out.println("Cargo stored in: " + request.getCityTo());
+                }
+                } else {
+                    System.out.println("There is not enough storage capacity in " + request.getCityTo());
+                    LOGGER.warn("There is not enough storage capacity in " + request.getCityTo());
+                    System.out.println("Do you want to calculate a route to the nearest city?");
+                    System.out.println("1 - yes; other - exit: ");
+                    int choice1 = in.nextInt();
+                    if (choice1 == 1) {
                         City nearestCity = Algorithm.findNearestCity(request.getCityFrom(), request.getCargo());
                         if (nearestCity == null) {
                             System.out.println("There is no reachable cities with capacity over " + request.getCargo());
                         } else {
                             System.out.println("The cargo can be stored in " + nearestCity.getName() +
                                     " (capacity: " + nearestCity.getStorageCapacity() + ")");
-                        }
 
+                            System.out.println("Do you want store cargo in " + nearestCity.getName());
+                            System.out.println("1 - yes; other - exit: ");
+                            int choice2 = in.nextInt();
+                            if (choice2 == 1) {
+
+                                int cargo = request.getCargo();
+                                DeliveryService deliveryService = new DeliveryService();
+                                Delivery delivery = new Delivery(departureCity, nearestCity, cargo);
+                                deliveryService.addDelivery(delivery);
+
+                                int newStorageCapacity = nearestCity.getStorageCapacity() - delivery.getCargo();
+                                nearestCity.setStorageCapacity(newStorageCapacity);
+                                cityService.updateCity(nearestCity);
+                                LOGGER.info("DB table updated");
+                                LOGGER.info("Cargo stored in: " + nearestCity.getName());
+                                System.out.println("Cargo stored in: " + nearestCity.getName());
+                            }
+                        }
                     } else {
                         System.exit(0);
                     }
@@ -70,7 +106,7 @@ public class DeliveryParsingMenu {
         }
     }
 
-    public void deliveryMenu(){
+    public void deliveryMenu() {
         in = new Scanner(System.in);
         System.out.println("Enter path to the JSON file:");
         String path = in.nextLine();
