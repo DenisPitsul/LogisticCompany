@@ -43,7 +43,7 @@ public class DeliveryParsingMenu {
                 if (destinationCity.getStorageCapacity() >= request.getCargo()) {
                     System.out.println("The cargo can be stored in " + request.getCityTo());
                     LOGGER.info("The cargo can be stored in " + request.getCityTo());
-                    System.out.println("Do you want store cargo in " + request.getCityTo());
+                    System.out.println("Do you want to store cargo in " + request.getCityTo());
                     System.out.println("1 - yes; other - exit: ");
                     choice = in.nextInt();
                     if (choice == 1) {
@@ -73,7 +73,7 @@ public class DeliveryParsingMenu {
                             System.out.println("The cargo can be stored in " + nearestCity.getName() +
                                     " (capacity: " + nearestCity.getStorageCapacity() + ")");
 
-                            System.out.println("Do you want store cargo in " + nearestCity.getName());
+                            System.out.println("Do you want to store cargo in " + nearestCity.getName());
                             System.out.println("1 - yes; other - exit: ");
                             choice = in.nextInt();
                             if (choice == 1) {
@@ -98,6 +98,7 @@ public class DeliveryParsingMenu {
                 throw new IncorrectJsonPath();
             }
         } catch (IncorrectJsonPath e) {
+            System.out.println(e.getMessage());
             LOGGER.error(e);
         }
     }

@@ -23,7 +23,7 @@ public class UserMenu {
     public void openMainMenu() {
         try {
             in = new Scanner(System.in);
-            System.out.println("Enter user which have to be login: ");
+            System.out.println("Enter username: ");
             String userName = in.nextLine();
             User user = getUserFromDB(userName);
             if (user != null) {
@@ -37,14 +37,12 @@ public class UserMenu {
     private User getUserFromDB(String userName) {
         User user = userService.getUserByUserName(userName);
         if (user != null) {
-            LOGGER.info("-------------------------------");
-            LOGGER.debug("Authorized by: " + user);
+            LOGGER.debug("Authorized user: " + user);
             LocalStorage.setAuthUser(user);
-            LOGGER.info("-------------------------------");
         } else {
-            LOGGER.info("-------------------------------");
-            LOGGER.info("There isn't any users by the username");
-            LOGGER.info("-------------------------------");
+            LOGGER.info("There is no users with username " + userName);
+            System.out.println("There is no users with username " + userName);
+
         }
         return user;
     }
