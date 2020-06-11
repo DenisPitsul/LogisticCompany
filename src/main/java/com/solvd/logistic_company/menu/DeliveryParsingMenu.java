@@ -39,14 +39,14 @@ public class DeliveryParsingMenu {
                 } else {
                     Algorithm.findShortestRoads(request.getCityFrom(), request.getCityTo());
                 }
-
+                int choice;
                 //   check if there's enough storageCapacity in a destination City
                 if (destinationCity.getStorageCapacity() >= request.getCargo()) {
                     System.out.println("The cargo can be stored in " + request.getCityTo());
                     LOGGER.info("The cargo can be stored in " + request.getCityTo());
                     System.out.println("Do you want store cargo in " + request.getCityTo());
                     System.out.println("1 - yes; other - exit: ");
-                    int choice = in.nextInt();
+                    choice = in.nextInt();
                     if (choice == 1) {
 
                         int cargo = request.getCargo();
@@ -66,8 +66,8 @@ public class DeliveryParsingMenu {
                     LOGGER.warn("There is not enough storage capacity in " + request.getCityTo());
                     System.out.println("Do you want to calculate a route to the nearest city?");
                     System.out.println("1 - yes; other - exit: ");
-                    int choice1 = in.nextInt();
-                    if (choice1 == 1) {
+                    choice = in.nextInt();
+                    if (choice == 1) {
                         City nearestCity = Algorithm.findNearestCity(request.getCityFrom(), request.getCargo());
                         if (nearestCity == null) {
                             System.out.println("There is no reachable cities with capacity over " + request.getCargo());
@@ -77,8 +77,8 @@ public class DeliveryParsingMenu {
 
                             System.out.println("Do you want store cargo in " + nearestCity.getName());
                             System.out.println("1 - yes; other - exit: ");
-                            int choice2 = in.nextInt();
-                            if (choice2 == 1) {
+                            choice = in.nextInt();
+                            if (choice == 1) {
 
                                 int cargo = request.getCargo();
                                 DeliveryService deliveryService = new DeliveryService();
