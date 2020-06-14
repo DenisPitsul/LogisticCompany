@@ -5,6 +5,7 @@ import com.solvd.logistic_company.dao.impl.DeliveryDAO;
 import com.solvd.logistic_company.entity.Delivery;
 import com.solvd.logistic_company.helper.CityNames;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class DeliveryService {
@@ -19,6 +20,10 @@ public class DeliveryService {
     }
 
     public void addDelivery(Delivery delivery) {
-        deliveryDAO.addDelivery(delivery);
+        try {
+            deliveryDAO.addDelivery(delivery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

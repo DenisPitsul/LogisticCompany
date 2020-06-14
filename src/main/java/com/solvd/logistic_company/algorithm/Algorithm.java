@@ -4,18 +4,26 @@ import com.solvd.logistic_company.entity.City;
 import com.solvd.logistic_company.entity.Road;
 import com.solvd.logistic_company.service.CityService;
 import com.solvd.logistic_company.service.RoadService;
+import org.apache.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Algorithm {
+    private final static Logger LOGGER = Logger.getLogger(Algorithm.class);
 
     public static void findShortestRoads(String cityFrom, String cityTo) {
         CityService cityService = new CityService();
         List<City> cityList = cityService.getAllCities();
 
         RoadService roadService = new RoadService();
-        List<Road> roadList = roadService.getAllRoads();
+        List<Road> roadList = null;
+        try {
+            roadList = roadService.getAllRoads();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
 
         Road[][] roadMatrix = getRoadMatrix(cityList, roadList);
         initNullRoadElements(roadMatrix, cityList);
@@ -157,7 +165,12 @@ public class Algorithm {
         }
 
         RoadService roadService = new RoadService();
-        List<Road> roadList = roadService.getAllRoads();
+        List<Road> roadList = null;
+        try {
+            roadList = roadService.getAllRoads();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
 
         Road[][] roadMatrix = getRoadMatrix(cityList, roadList);
         initNullRoadElements(roadMatrix, cityList);

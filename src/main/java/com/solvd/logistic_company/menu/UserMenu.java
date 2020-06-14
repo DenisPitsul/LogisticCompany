@@ -41,8 +41,6 @@ public class UserMenu {
             LocalStorage.setAuthUser(user);
         } else {
             LOGGER.info("There is no users with username " + userName);
-            System.out.println("There is no users with username " + userName);
-
         }
         return user;
     }

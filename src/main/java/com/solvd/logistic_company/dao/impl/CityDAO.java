@@ -6,6 +6,7 @@ import com.solvd.logistic_company.utils.MyBatisConfig;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class CityDAO implements ICityDAO {
@@ -29,7 +30,13 @@ public class CityDAO implements ICityDAO {
     public City getCityByName(String name) {
         SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession();
         cityDAO = session.getMapper(cityDAOClass);
-        City city = cityDAO.getCityByName(name);
+        City city = null;
+        try {
+            city = cityDAO.getCityByName(name);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            LOGGER.info("Too many connections to DB");
+        }
         LOGGER.info("Got city by name");
         session.close();
 

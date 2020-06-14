@@ -7,6 +7,7 @@ import com.solvd.logistic_company.utils.MyBatisConfig;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class RoadDAO implements IRoadDAO {
@@ -19,7 +20,12 @@ public class RoadDAO implements IRoadDAO {
     public List<Road> getAllRoads() {
         SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession();
         roadDAO = session.getMapper(roadDAOClass);
-        List<Road> roadList = roadDAO.getAllRoads();
+        List<Road> roadList = null;
+        try {
+             roadList = roadDAO.getAllRoads();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
         LOGGER.info("Got all roads");
         session.close();
 

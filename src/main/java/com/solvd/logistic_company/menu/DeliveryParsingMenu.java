@@ -10,6 +10,7 @@ import com.solvd.logistic_company.service.DeliveryService;
 import org.apache.log4j.Logger;
 
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class DeliveryParsingMenu {
@@ -97,9 +98,8 @@ public class DeliveryParsingMenu {
             } else {
                 throw new IncorrectJsonPath();
             }
-        } catch (IncorrectJsonPath e) {
-            System.out.println(e.getMessage());
-            LOGGER.error(e);
+        } catch (IncorrectJsonPath | SQLException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 

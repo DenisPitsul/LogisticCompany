@@ -4,6 +4,7 @@ import com.solvd.logistic_company.dao.ICityDAO;
 import com.solvd.logistic_company.dao.impl.CityDAO;
 import com.solvd.logistic_company.entity.City;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class CityService {
@@ -13,7 +14,7 @@ public class CityService {
         return cityDAO.getCityById(id);
     }
 
-    public City getCityByName(String name) {
+    public City getCityByName(String name) throws SQLException {
         return cityDAO.getCityByName(name);
     }
 

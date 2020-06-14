@@ -7,6 +7,7 @@ import com.solvd.logistic_company.utils.MyBatisConfig;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class DeliveryDAO implements IDeliveryDAO {
@@ -41,7 +42,11 @@ public class DeliveryDAO implements IDeliveryDAO {
     public void addDelivery(Delivery delivery) {
         SqlSession session = MyBatisConfig.getSqlSessionFactory().openSession();
         deliveryDAO = session.getMapper(deliveryDAOClass);
-        deliveryDAO.addDelivery(delivery);
+        try {
+            deliveryDAO.addDelivery(delivery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         LOGGER.info("Added new delivery");
         session.commit();
         session.close();
