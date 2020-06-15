@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DeliveryProcessing {
@@ -20,6 +21,12 @@ public class DeliveryProcessing {
 
     private Scanner in;
 
+    /**
+     * The method checks possibility of cargo transportation between cities according to Json request.
+     *
+     * @author Olga Opryshko
+     * @author Serg Kruchinskii
+     */
     public void dataChecks(String path) {
 
         in = new Scanner(System.in);
@@ -46,22 +53,9 @@ public class DeliveryProcessing {
                 if (destinationCity.getStorageCapacity() >= request.getCargo()) {
                     System.out.println("The cargo can be stored in " + request.getCityTo());
                     LOGGER.info("The cargo can be stored in " + request.getCityTo());
-                    System.out.println("Do you want to store cargo in " + request.getCityTo());
-                    System.out.println("1 - yes; other - exit: ");
-                    choice = in.nextInt();
-                    if (choice == 1) {
-                        int cargo = request.getCargo();
-                        DeliveryService deliveryService = new DeliveryService();
-                        Delivery delivery = new Delivery(departureCity, destinationCity, cargo);
-                        deliveryService.addDelivery(delivery);
 
-                        int newStorageCapacity = destinationCity.getStorageCapacity() - delivery.getCargo();
-                        destinationCity.setStorageCapacity(newStorageCapacity);
-                        cityService.updateCity(destinationCity);
-                        LOGGER.info("DB table updated");
-                        LOGGER.info("Cargo stored in: " + request.getCityTo());
-                        System.out.println("Cargo stored in: " + request.getCityTo());
-                    }
+                    cargoToCity(request, departureCity, destinationCity, request.getCityTo());
+
                 } else {
                     System.out.println("There is not enough storage capacity in " + request.getCityTo());
                     LOGGER.warn("There is not enough storage capacity in " + request.getCityTo());
@@ -76,22 +70,7 @@ public class DeliveryProcessing {
                             System.out.println("The cargo can be stored in " + nearestCity.getName() +
                                     " (capacity: " + nearestCity.getStorageCapacity() + ")");
 
-                            System.out.println("Do you want to store cargo in " + nearestCity.getName());
-                            System.out.println("1 - yes; other - exit: ");
-                            choice = in.nextInt();
-                            if (choice == 1) {
-                                int cargo = request.getCargo();
-                                DeliveryService deliveryService = new DeliveryService();
-                                Delivery delivery = new Delivery(departureCity, nearestCity, cargo);
-                                deliveryService.addDelivery(delivery);
-
-                                int newStorageCapacity = nearestCity.getStorageCapacity() - delivery.getCargo();
-                                nearestCity.setStorageCapacity(newStorageCapacity);
-                                cityService.updateCity(nearestCity);
-                                LOGGER.info("DB table updated");
-                                LOGGER.info("Cargo stored in: " + nearestCity.getName());
-                                System.out.println("Cargo stored in: " + nearestCity.getName());
-                            }
+                            cargoToCity(request, departureCity, nearestCity, nearestCity.getName());
                         }
                     } else {
                         System.exit(0);
@@ -100,10 +79,42 @@ public class DeliveryProcessing {
             } else {
                 throw new IncorrectJsonPath();
             }
-        } catch (IncorrectJsonPath | SQLException e) {
+        } catch (IncorrectJsonPath | SQLException | InputMismatchException e) {
             LOGGER.error(e.getMessage());
         }
 
+    }
+
+    /**
+     * The method writes the history of orders into the database's table "Delivery" and
+     * updates storage capacity in a table "City".
+     *
+     * @author Serg Kruchinskii
+     * @author Olga Opryshko
+     */
+    private void cargoToCity(DeliveryRequest request, City departureCity, City newCity, String name) {
+        int choice;
+        System.out.println("Do you want to store cargo in " + name);
+        System.out.println("1 - yes; other - exit: ");
+        choice = in.nextInt();
+        if (choice == 1) {
+            int cargo = request.getCargo();
+            DeliveryService deliveryService = new DeliveryService();
+            Delivery delivery = new Delivery(departureCity, newCity, cargo);
+            deliveryService.addDelivery(delivery);
+
+            int newStorageCapacity = newCity.getStorageCapacity() - delivery.getCargo();
+            newCity.setStorageCapacity(newStorageCapacity);
+
+            int newDepartureCapacity = departureCity.getStorageCapacity() + delivery.getCargo();
+            departureCity.setStorageCapacity(newDepartureCapacity);
+            cityService.updateCity(departureCity);
+
+            cityService.updateCity(newCity);
+            LOGGER.info("DB table updated");
+            LOGGER.info("Cargo stored in: " + name);
+            System.out.println("Cargo stored in: " + name);
+        }
     }
 
 }

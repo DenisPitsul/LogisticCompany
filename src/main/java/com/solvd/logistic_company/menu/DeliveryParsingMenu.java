@@ -32,7 +32,7 @@ public class DeliveryParsingMenu {
             System.out.println("Enter path to the JSON file:");
             String path = in.nextLine();
             inputParsingOperation(path);
-            System.out.println("Do you want to add new del ivery? 1 - yes; 2 - no:");
+            System.out.println("Do you want to add new delivery? 1 - yes; 2 - no:");
             choice = in.nextInt();
         }
     }
