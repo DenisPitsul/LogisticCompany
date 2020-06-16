@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An <code>Algorithm</code> class count if cityTo storage capacity has enough places to store delivery order
+ * An <code>Algorithm</code> class contain methods which count if cityTo storage capacity has enough places to
+ * store delivery order
  * @author Kateryna Buchkovska
  * @author Denis Pitsul
  */
